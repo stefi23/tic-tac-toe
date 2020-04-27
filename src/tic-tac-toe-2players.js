@@ -87,6 +87,7 @@ function play(xTurn, zeroTurn) {
   }
 }
 
+//board
 function isInputOutsideOfPositionsboard(position) {
   if (position < 1 || position > 9) {
     console.log("Number should be between 1-9");
@@ -103,6 +104,7 @@ function isInputValid(position) {
   return true;
 }
 
+//board
 function istheSpotFree(position) {
   if (board[+position - 1] == "0" || board[+position - 1] == "X") {
     console.log("Spot is ocuppied. Try again please!");
