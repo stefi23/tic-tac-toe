@@ -17,17 +17,17 @@ const readline = require("readline").createInterface({
 });
 
 let board;
-let gameOver = false;
 let xTurn = true;
-let zeroTurn = false;
+let computerTurn = false;
 
 console.log("Welcome to the game!");
+console.log("Will Stefi beat you?");
 
 render(positionsBoard);
 
 initializaGame();
 
-play();
+play(xTurn, computerTurn);
 
 //Functions:
 
@@ -41,30 +41,41 @@ function render(board) {
   console.log(board.slice(6, 9));
 }
 
-function play() {
-  if (!gameOver && xTurn) {
+function play(xTurn, computerTurn) {
+  if (getWinner() === "tie") {
+    return readline.close();
+  }
+  if (xTurn) {
     readline.question(`What's  your  move X?`, (position) => {
       position = parseInt(position);
       if (!isInputCorrect(position)) {
-        play();
+        play(xTurn, computerTurn);
       } else if (!isInputOutsideOfPositionsboard(position)) {
-        play();
+        play(xTurn, computerTurn);
       } else if (!istheSpotFree(position)) {
-        play();
+        play(xTurn, computerTurn);
       } else {
         markXonBoard(position);
+        xTurn = false;
+        computerTurn = true;
         render(board);
-        getWinner();
-        play();
+        if (getWinner()) {
+          return readline.close();
+        }
+        play(xTurn, computerTurn);
       }
     });
   }
 
-  if (!gameOver && zeroTurn) {
+  if (computerTurn) {
     mark0onBoard();
+    xTurn = true;
+    computerTurn = false;
     render(board);
-    getWinner();
-    play();
+    if (getWinner()) {
+      return readline.close();
+    }
+    play(xTurn, computerTurn);
   }
 }
 
@@ -96,21 +107,22 @@ function markXonBoard(position) {
   xTurn = false;
   let idx = position - 1;
   board[idx] = "X";
-  zeroTurn = true;
+  computerTurn = true;
 }
 
 function mark0onBoard() {
-  zeroTurn = false;
+  computerTurn = false;
   let indexForZero = getRandomInt();
 
-  console.log("Stefi's turn");
-
   if (board[4] == "") {
+    console.log("Stefi's turn");
     board[4] = "0";
   } else if (isXclosetoWinning()) {
+    console.log("Stefi's turn");
     board[isXclosetoWinning()] = "0";
   } else {
     if (board[indexForZero - 1] == "") {
+      console.log("Stefi's turn");
       board[indexForZero - 1] = "0";
     } else if (
       board[indexForZero - 1] == "X" ||
@@ -119,7 +131,6 @@ function mark0onBoard() {
       mark0onBoard();
     }
   }
-
   xTurn = true;
 }
 
@@ -143,9 +154,49 @@ function isXclosetoWinning() {
     ) {
       return secondWinningPosition;
     }
+    if (
+      board[secondWinningPosition] == "X" &&
+      board[secondWinningPosition] == board[thirdWinningPosition] &&
+      board[firstWinningPosition] !== "0"
+    ) {
+      return firstWinningPosition;
+    }
   }
   return null;
 }
+
+/* function isComputerclosetoWinning() {
+  for (let i = 0; i < winningCombos.length; i++) {
+    let combo = winningCombos[i];
+    const firstWinningPosition = combo[0];
+    const secondWinningPosition = combo[1];
+    const thirdWinningPosition = combo[2];
+    if (
+      board[firstWinningPosition] == "0" &&
+      board[firstWinningPosition] == board[secondWinningPosition] &&
+      board[thirdWinningPosition] !== "X"
+    ) {
+      return thirdWinningPosition;
+    }
+    if (
+      board[firstWinningPosition] == "0" &&
+      board[firstWinningPosition] == board[thirdWinningPosition] &&
+      board[secondWinningPosition] !== "X"
+    ) {
+      return secondWinningPosition;
+    }
+    if (
+      board[secondWinningPosition] == "0" &&
+      board[secondWinningPosition] == board[thirdWinningPosition] &&
+      board[thirdWinningPosition] !== "X"
+    ) {
+      return firstWinningPosition;
+    }
+  }
+  return null;
+}
+
+*/
 
 function getRandomInt() {
   min = 1;
@@ -168,19 +219,21 @@ function getWinner() {
     }
   });
 
-  winner = winner ? winner : board.includes("") ? null : "Tie";
-  if (winner === "X") {
+  if (displayWinner(winner) === "tie") {
+    console.log("You have a tie!");
+    return "tie";
+  }
+
+  return winner;
+}
+
+function displayWinner(winner) {
+  if (winner === null && !board.includes("")) {
+    return "tie";
+  } else if (winner === "X") {
     console.log("X wins");
-    gameOver = true;
-    readline.close();
   } else if (winner === "0") {
-    console.log("Stefi wins");
-    gameOver = true;
-    readline.close();
-  } else if (winner === "Tie") {
-    console.log("It's a tie.");
-    gameOver = true;
-    readline.close();
+    console.log("0 wins");
   }
   return winner;
 }

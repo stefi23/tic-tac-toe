@@ -18,7 +18,7 @@ const readline = require("readline").createInterface({
 
 let board;
 let xTurn = true;
-let zeroTurn = false;
+let computerTurn = false;
 
 console.log("Welcome to the game!");
 
@@ -26,7 +26,7 @@ render(positionsBoard);
 
 initializaGame();
 
-play(xTurn, zeroTurn);
+play(xTurn, computerTurn);
 
 //Functions:
 
@@ -40,39 +40,39 @@ function render(board) {
   console.log(board.slice(6, 9));
 }
 
-function play(xTurn, zeroTurn) {
+function play(xTurn, computerTurn) {
   if (xTurn) {
     readline.question(`What's  your  move X?`, (position) => {
       position = parseInt(position);
       if (!isInputCorrect(position)) {
-        play(xTurn, zeroTurn);
+        play(xTurn, computerTurn);
       } else if (!isInputOutsideOfPositionsboard(position)) {
-        play(xTurn, zeroTurn);
+        play(xTurn, computerTurn);
       } else if (!istheSpotFree(position)) {
-        play(xTurn, zeroTurn);
+        play(xTurn, computerTurn);
       } else {
         markXonBoard(position);
         xTurn = false;
-        zeroTurn = true;
+        computerTurn = true;
         render(board);
         if (getWinner()) {
           return readline.close();
         }
 
-        play(xTurn, zeroTurn);
+        play(xTurn, computerTurn);
       }
     });
   }
 
-  if (zeroTurn) {
+  if (computerTurn) {
     mark0onBoard();
     xTurn = true;
-    zeroTurn = false;
+    computerTurn = false;
     render(board);
     if (getWinner()) {
       return readline.close();
     }
-    play(xTurn, zeroTurn);
+    play(xTurn, computerTurn);
   }
 }
 
