@@ -56,7 +56,7 @@ function play(xTurn, zeroTurn) {
         zeroTurn = true;
         render(board);
         if (getWinner()) {
-          readline.close();
+          return readline.close();
         }
         play(xTurn, zeroTurn);
       }
@@ -78,7 +78,7 @@ function play(xTurn, zeroTurn) {
         zeroTurn = false;
         render(board);
         if (getWinner()) {
-          readline.close();
+          return readline.close();
         }
 
         play(xTurn, zeroTurn);
