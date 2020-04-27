@@ -120,6 +120,9 @@ function mark0onBoard() {
   } else if (isXclosetoWinning()) {
     console.log("Stefi's turn");
     board[isXclosetoWinning()] = "0";
+  } else if (isComputerclosetoWinning()) {
+    console.log("Stefi's turn");
+    board[isComputerclosetoWinning()] = "0";
   } else {
     if (board[indexForZero - 1] == "") {
       console.log("Stefi's turn");
@@ -165,7 +168,7 @@ function isXclosetoWinning() {
   return null;
 }
 
-/* function isComputerclosetoWinning() {
+function isComputerclosetoWinning() {
   for (let i = 0; i < winningCombos.length; i++) {
     let combo = winningCombos[i];
     const firstWinningPosition = combo[0];
@@ -195,8 +198,6 @@ function isXclosetoWinning() {
   }
   return null;
 }
-
-*/
 
 function getRandomInt() {
   min = 1;

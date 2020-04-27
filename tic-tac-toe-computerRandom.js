@@ -41,6 +41,9 @@ function render(board) {
 }
 
 function play(xTurn, computerTurn) {
+  if (getWinner() === "tie") {
+    return readline.close();
+  }
   if (xTurn) {
     readline.question(`What's  your  move X?`, (position) => {
       position = parseInt(position);
@@ -135,13 +138,16 @@ function getWinner() {
       winner = board[combo[0]];
     }
   });
-  displayWinner(winner);
+  if (displayWinner(winner) === "tie") {
+    console.log("You have a tie!");
+    return "tie";
+  }
   return winner;
 }
 
 function displayWinner(winner) {
   if (winner === null && !board.includes("")) {
-    console.log("It's a tie.");
+    return "tie";
   } else if (winner === "X") {
     console.log("X wins");
   } else if (winner === "0") {
