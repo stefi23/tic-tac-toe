@@ -12,14 +12,36 @@ class Board {
   }
 
   write(position, value) {
-    this.board[position] = value;
+    let index = position - 1;
+    this.board[index] = value;
   }
-  /*
-  Homework:
 
-  function in which we can pass a value x or 0 -> add also test
-  start with the test
-  */
+  isSpotFree(position) {
+    if (this.board[position - 1] == "0" || this.board[position - 1] == "X") {
+      console.log("Spot is ocuppied. Try again please!");
+      return false;
+    }
+    return true;
+  }
+
+  isInputOutsideOfBoard(position) {
+    if (position < 1 || position > 9) {
+      console.log("Number should be between 1-9");
+      return true;
+    }
+    return false;
+  }
+
+  isInputValid(position) {
+    position = parseInt(position);
+    if (isNaN(position)) {
+      console.log(
+        "Input incorrect. Please make sure you add a number from 1-9."
+      );
+      return false;
+    }
+    return true;
+  }
 }
 
 module.exports = Board;
