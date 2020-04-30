@@ -1,14 +1,6 @@
 const positionsBoard = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-const winningCombos = [
-  [0, 1, 2],
-  [3, 4, 5],
-  [6, 7, 8],
-  [0, 3, 6],
-  [1, 4, 7],
-  [2, 5, 8],
-  [0, 4, 8],
-  [2, 4, 6],
-];
+
+const Board = require("./board");
 
 //This is a const that allows user to add input
 const readline = require("readline").createInterface({
@@ -51,7 +43,7 @@ function play(xTurn, zeroTurn) {
       } else if (!istheSpotFree(position)) {
         play(xTurn, zeroTurn);
       } else {
-        markXonBoard(position);
+        markXonBoard(board, position);
         xTurn = false;
         zeroTurn = true;
         render(board);
@@ -74,6 +66,7 @@ function play(xTurn, zeroTurn) {
         play(xTurn, zeroTurn);
       } else {
         mark0onBoard(position);
+        board.write("x", 2);
         xTurn = true;
         zeroTurn = false;
         render(board);
@@ -87,58 +80,21 @@ function play(xTurn, zeroTurn) {
   }
 }
 
-//board
-function isInputOutsideOfPositionsboard(position) {
-  if (position < 1 || position > 9) {
-    console.log("Number should be between 1-9");
-    return false;
-  }
-  return true;
-}
-
 function isInputValid(position) {
-  if (Number.isNaN(position)) {
+  position = parseInt(position);
+  if (isNaN(position)) {
     console.log("Input incorrect. Please make sure you add a number from 1-9.");
     return false;
   }
   return true;
 }
 
-//board
-function istheSpotFree(position) {
-  if (board[+position - 1] == "0" || board[+position - 1] == "X") {
-    console.log("Spot is ocuppied. Try again please!");
-    return false;
+function isInputOutsideOfBoard(position) {
+  if (position < 1 || position > 9) {
+    console.log("Number should be between 1-9");
+    return true;
   }
-  return true;
-}
-
-function markXonBoard(position) {
-  let idx = position - 1;
-  board[idx] = "X";
-}
-
-function mark0onBoard(position) {
-  let idx = position - 1;
-  board[idx] = "0";
-}
-
-function getWinner() {
-  let winner = null;
-  winningCombos.forEach((combo, index) => {
-    const firstWinningPosition = combo[0];
-    const secondWinningPosition = combo[1];
-    const thirdWinningPosition = combo[2];
-    if (
-      board[firstWinningPosition] !== "" &&
-      board[firstWinningPosition] === board[secondWinningPosition] &&
-      board[firstWinningPosition] === board[thirdWinningPosition]
-    ) {
-      winner = board[combo[0]];
-    }
-  });
-  displayWinner(winner);
-  return winner;
+  return false;
 }
 
 function displayWinner(winner) {
@@ -151,3 +107,8 @@ function displayWinner(winner) {
   }
   return winner;
 }
+
+module.exports = {
+  isInputValid,
+  isInputOutsideOfBoard,
+};

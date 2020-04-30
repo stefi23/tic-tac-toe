@@ -1,15 +1,16 @@
+const winningCombos = [
+  [0, 1, 2],
+  [3, 4, 5],
+  [6, 7, 8],
+  [0, 3, 6],
+  [1, 4, 7],
+  [2, 5, 8],
+  [0, 4, 8],
+  [2, 4, 6],
+];
+
 class Board {
   board = ["", "", "", "", "", "", "", "", ""];
-
-  get() {
-    return this.board;
-  }
-
-  render() {
-    console.log(this.board.slice(0, 3));
-    console.log(this.board.slice(3, 6));
-    console.log(this.board.slice(6, 9));
-  }
 
   write(position, value) {
     let index = position - 1;
@@ -24,23 +25,22 @@ class Board {
     return true;
   }
 
-  isInputOutsideOfBoard(position) {
-    if (position < 1 || position > 9) {
-      console.log("Number should be between 1-9");
-      return true;
+  getWinner() {
+    const { board } = this;
+    for (const [
+      firstPosition,
+      secondPosition,
+      thirdPosition,
+    ] of winningCombos) {
+      if (
+        board[firstPosition] !== "" &&
+        board[firstPosition] === board[secondPosition] &&
+        board[firstPosition] === board[thirdPosition]
+      ) {
+        return board[firstPosition];
+      }
     }
-    return false;
-  }
-
-  isInputValid(position) {
-    position = parseInt(position);
-    if (isNaN(position)) {
-      console.log(
-        "Input incorrect. Please make sure you add a number from 1-9."
-      );
-      return false;
-    }
-    return true;
+    return null;
   }
 }
 

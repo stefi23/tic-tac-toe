@@ -1,0 +1,7 @@
+- Board
+  - Free Spots
+  - Winner
+- User Interface (terminal)
+  - accepts input from the user
+  - displays the state of the game to the user
+- Computer
