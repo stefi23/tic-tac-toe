@@ -1,7 +1,4 @@
-const {
-  isInputValid,
-  isInputOutsideOfBoard,
-} = require("./tic-tac-toe-2players");
+const { isInputValid } = require("./tic-tac-toe-2players");
 
 describe("TwoPlayers", () => {
   describe("#isInputValid", () => {

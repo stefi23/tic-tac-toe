@@ -3,7 +3,6 @@ const GameUI = require("./GameUI");
 const board = new Board();
 const gameUI = new GameUI(board);
 
-//This is a const that allows user to add input
 const readline = require("readline").createInterface({
   input: process.stdin,
   output: process.stdout,
