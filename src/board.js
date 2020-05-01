@@ -12,6 +12,10 @@ const winningCombos = [
 class Board {
   board = ["", "", "", "", "", "", "", "", ""];
 
+  getBoard() {
+    return this.board;
+  }
+
   write(position, value) {
     let index = position - 1;
     this.board[index] = value;
@@ -23,6 +27,18 @@ class Board {
       return false;
     }
     return true;
+  }
+
+  isBoardFull() {
+    return !this.board.includes("");
+  }
+
+  isInputOutsideOfBoard(position) {
+    if (position < 1 || position > 9) {
+      console.log("Number should be between 1-9");
+      return true;
+    }
+    return false;
   }
 
   getWinner() {
@@ -41,6 +57,10 @@ class Board {
       }
     }
     return null;
+  }
+
+  gameOver() {
+    return this.isBoardFull() || this.getWinner() !== null;
   }
 }
 

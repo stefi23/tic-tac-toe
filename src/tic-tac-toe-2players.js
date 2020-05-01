@@ -1,6 +1,7 @@
-const positionsBoard = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-
 const Board = require("./board");
+const GameUI = require("./GameUI");
+const board = new Board();
+const gameUI = new GameUI(board);
 
 //This is a const that allows user to add input
 const readline = require("readline").createInterface({
@@ -8,72 +9,68 @@ const readline = require("readline").createInterface({
   output: process.stdout,
 });
 
-let board;
+const getUserInput = (question) => {
+  return new Promise((resolve, reject) => {
+    readline.question(question, (answer) => {
+      resolve(answer);
+    });
+  });
+};
+
 let xTurn = true;
 let zeroTurn = false;
 
-console.log("Welcome to the game!");
-
-render(positionsBoard);
-
-initializaGame();
+gameUI.initialize();
 
 play(xTurn, zeroTurn);
 
-//Functions:
-
-function initializaGame() {
-  board = ["", "", "", "", "", "", "", "", ""];
-}
-
-function render(board) {
-  console.log(board.slice(0, 3));
-  console.log(board.slice(3, 6));
-  console.log(board.slice(6, 9));
-}
-
 function play(xTurn, zeroTurn) {
+  // let player = "X";
+  //while boardisnot filled
+  // while (!board.gameOver()) {}
   if (xTurn) {
-    readline.question(`What's  your  move X?`, (position) => {
+    readline.question(`What's  your  move "X"?`, (position) => {
       position = parseInt(position);
       if (!isInputValid(position)) {
         play(xTurn, zeroTurn);
-      } else if (!isInputOutsideOfPositionsboard(position)) {
+      } else if (board.isInputOutsideOfBoard(position)) {
         play(xTurn, zeroTurn);
-      } else if (!istheSpotFree(position)) {
+      } else if (!board.isSpotFree(position)) {
         play(xTurn, zeroTurn);
       } else {
-        markXonBoard(board, position);
+        board.write(position, "X");
         xTurn = false;
         zeroTurn = true;
-        render(board);
-        if (getWinner()) {
+        gameUI.renderBoard();
+        if (board.gameOver()) {
+          gameUI.displayWinner();
           return readline.close();
         }
         play(xTurn, zeroTurn);
       }
+      // if (player === "X") player = "O";
+      // else player = "X"
     });
   }
 
   if (zeroTurn) {
-    readline.question(`What's  your  move 0?`, (position) => {
+    readline.question(`What's  your  move O?`, (position) => {
       position = parseInt(position);
       if (!isInputValid(position)) {
         play(xTurn, zeroTurn);
-      } else if (!isInputOutsideOfPositionsboard(position)) {
+      } else if (board.isInputOutsideOfBoard(position)) {
         play(xTurn, zeroTurn);
-      } else if (!istheSpotFree(position)) {
+      } else if (!board.isSpotFree(position)) {
         play(xTurn, zeroTurn);
       } else {
-        mark0onBoard(position);
-        board.write("x", 2);
+        board.write(position, "O");
         xTurn = true;
         zeroTurn = false;
-        render(board);
-        if (getWinner()) {
+        gameUI.renderBoard();
+        if (board.gameOver()) {
+          gameUI.displayWinner();
           return readline.close();
         }
-
         play(xTurn, zeroTurn);
       }
     });
@@ -89,26 +86,28 @@ function isInputValid(position) {
   return true;
 }
 
-function isInputOutsideOfBoard(position) {
-  if (position < 1 || position > 9) {
-    console.log("Number should be between 1-9");
-    return true;
-  }
-  return false;
+//DELETE AND MOVE TESTS IN BOARD.TESTS!
+function gameOver(winner) {
+  return board.isBoardFull() || winner !== null;
 }
 
 function displayWinner(winner) {
-  if (winner === null && !board.includes("")) {
+  if (winner === null) {
     console.log("It's a tie.");
   } else if (winner === "X") {
     console.log("X wins");
-  } else if (winner === "0") {
-    console.log("0 wins");
+  } else if (winner === "O") {
+    console.log("O wins");
   }
   return winner;
 }
 
+// function displayPositionsBoard(positionsBoard) {
+//   console.log(positionsBoard.slice(0, 3));
+//   console.log(positionsBoard.slice(3, 6));
+//   console.log(positionsBoard.slice(6, 9));
+// }
+
 module.exports = {
   isInputValid,
-  isInputOutsideOfBoard,
 };
