@@ -3,10 +3,10 @@ const GameUI = require("./GameUI");
 const board = new Board();
 const gameUI = new GameUI(board);
 
-const readline = require("readline").createInterface({
-  input: process.stdin,
-  output: process.stdout,
-});
+// const readline = require("readline").createInterface({
+//   input: process.stdin,
+//   output: process.stdout,
+// });
 
 const getPlayerInput = (question) => {
   return new Promise((resolve, reject) => {
@@ -29,7 +29,7 @@ const gamePlay = async (player) => {
       board.write(position, player);
 
       if (player === "X") {
-        player = "O";
+        player = "0";
       } else {
         player = "X";
       }

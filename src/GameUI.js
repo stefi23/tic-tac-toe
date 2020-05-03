@@ -6,6 +6,11 @@ const render = (board) => {
   console.log(board.slice(6, 9));
 };
 
+// const readline = require("readline").createInterface({
+//   input: process.stdin,
+//   output: process.stdout,
+// });
+
 class GameUI {
   constructor(board) {
     this.board = board;
