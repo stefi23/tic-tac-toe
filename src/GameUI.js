@@ -5,14 +5,11 @@ const render = (board) => {
   console.log(board.slice(3, 6));
   console.log(board.slice(6, 9));
 };
+const Board = require("./board.js");
 
-// const readline = require("readline").createInterface({
-//   input: process.stdin,
-//   output: process.stdout,
-// });
-
-class GameUI {
+class GameUI extends Board {
   constructor(board) {
+    super(board);
     this.board = board;
   }
 
@@ -28,13 +25,13 @@ class GameUI {
     return render(this.board.getBoard());
   }
   displayWinner() {
-    const winner = this.board.getWinner();
+    const winner = this.getWinner();
     if (winner === null) {
-      console.log("It's a tie.");
+      return "It's a tie.";
     } else if (winner === "X") {
       console.log("X wins");
     } else if (winner === "O") {
-      console.log("O wins");
+      console.log("0 wins");
     }
     return winner;
   }

@@ -1,5 +1,5 @@
 const Board = require("./board");
-const GameUI = require("./GameUI");
+const GameUI = require("./gameUI");
 const board = new Board();
 const gameUI = new GameUI(board);
 
