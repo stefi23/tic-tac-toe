@@ -15,53 +15,37 @@ const getPlayerInput = (question) => {
     });
   });
 };
-
 let player = "X";
+gameUI.initialize();
+gamePlay(player);
+
 const gamePlay = async (player) => {
   while (!board.gameOver()) {
     let position = await getPlayerInput(`What's  your  move ${player}?`);
     position = parseInt(position);
-    if (
-      isInputValid(position) &&
-      !board.isInputOutsideOfBoard(position) &&
-      board.isSpotFree(position)
-    ) {
-      board.write(position, player);
-
-      if (player === "X") {
-        player = "0";
-      } else {
-        player = "X";
-      }
-      gameUI.renderBoard();
-      if (board.gameOver()) {
-        gameUI.displayWinner();
-        return readline.close();
-      }
+    gameUI.displayErrorMessages(position, player);
+    if (player === "X") {
+      player = "0";
     } else {
-      if (!isInputValid(position)) {
-        gamePlay(player);
-      } else if (board.isInputOutsideOfBoard(position)) {
-        gamePlay(player);
-      } else if (!board.isSpotFree(position)) {
-        gamePlay(player);
-      }
+      player = "X";
+    }
+    gameUI.renderBoard();
+    if (board.gameOver()) {
+      gameUI.displayWinner();
+      return readline.close();
     }
   }
 };
 
-gameUI.initialize();
-gamePlay(player);
+// function isInputValid(position) {
+//   position = parseInt(position);
+//   if (isNaN(position)) {
+//     console.log("Input incorrect. Please make sure you add a number from 1-9.");
+//     return false;
+//   }
+//   return true;
+// }
 
-function isInputValid(position) {
-  position = parseInt(position);
-  if (isNaN(position)) {
-    console.log("Input incorrect. Please make sure you add a number from 1-9.");
-    return false;
-  }
-  return true;
-}
-
-module.exports = {
-  isInputValid,
-};
+// module.exports = {
+//   isInputValid,
+// };
