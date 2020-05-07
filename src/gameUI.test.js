@@ -31,36 +31,59 @@ describe("Game UI", () => {
       expect(mockConsoleLog).toHaveBeenCalledWith("0 wins");
     });
   });
-  describe("#displayErrorMessages", () => {
-    it(`should console "This is not a number. Try again" in case the input is not a number`, () => {
-      const board = new Board();
-      const gameUI = new GameUI(board);
-      let position1 = "A";
-      let player = "X";
+  describe("#displayErrorMessage", () => {
+    it.each(["A", " ", "%$", " S )*S"])(
+      `should console "This is not a number. Try again" in case the input is not a number`,
+      (position) => {
+        const board = new Board();
+        const gameUI = new GameUI(board);
+        let player = "X";
 
-      try {
-        board.write(position1, player); // This throws as you have it right now
-      } catch (error) {
-        gameUI.displayErrorMessage(error);
+        try {
+          board.write(position, player); // This throws as you have it right now
+        } catch (error) {
+          gameUI.displayErrorMessage(error);
+        }
+        expect(mockConsoleLog).toHaveBeenCalledWith(
+          "This is not a number. Please make sure you add a number from 1-9.Try again"
+        );
       }
-      expect(mockConsoleLog).toHaveBeenCalledWith(
-        "This is not a number. Please make sure you add a number from 1-9.Try again"
-      );
-    });
-    // it(`should console "Position is outside of board. Try again" in case the position outside of the board`, () => {
-    //   const board = new Board();
-    //   const gameUI = new GameUI(board);
-    //   let position1 = -2;
-    //   let player = "X";
-    //   let position2 = 22;
-    //   gameUI.displayErrorMessages(position1, player);
-    //   expect(mockConsoleLog).toHaveBeenCalledWith(
-    //     "Position is outside of board. Try again"
-    //   );
-    //   gameUI.displayErrorMessages(position2, player);
-    //   expect(mockConsoleLog).toHaveBeenCalledWith(
-    //     "Position is outside of board. Try again"
-    //   );
-    // });
+    );
+    it.each([22, -3, 873, -4032, 32, 0])(
+      `should console "Position is outside of board. Try again" in case the position outside of the board`,
+      (position) => {
+        const board = new Board();
+        const gameUI = new GameUI(board);
+        let player = "X";
+
+        try {
+          board.write(position, player); // This throws as you have it right now
+        } catch (error) {
+          gameUI.displayErrorMessage(error);
+        }
+        expect(mockConsoleLog).toHaveBeenCalledWith(
+          "Position is outside of board. Try again"
+        );
+      }
+    );
+    it.each([1, 2, 3, 4, 5, 6, 7, 8, 9])(
+      `should console "Spot is occupied. Try again" in case the position outside of the board`,
+      (position) => {
+        const board = new Board();
+        const gameUI = new GameUI(board);
+
+        let player = "0";
+        board.board = ["0", "X", "0", "X", "X", "0", "X", "0", "X"];
+
+        try {
+          board.write(position, player); // This throws as you have it right now
+        } catch (error) {
+          gameUI.displayErrorMessage(error);
+        }
+        expect(mockConsoleLog).toHaveBeenCalledWith(
+          "Spot is occupied. Try again"
+        );
+      }
+    );
   });
 });
