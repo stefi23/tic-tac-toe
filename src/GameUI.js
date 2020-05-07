@@ -12,11 +12,11 @@ const {
   ERROR_SPOT_IS_OCCUPIED,
 } = require("./constants");
 
-// const Board = require("./board.js");
-
 class GameUI {
   constructor(board) {
-    // super(board);
+    if (board === undefined) {
+      throw new Error("Board is not defined");
+    }
     this.board = board;
   }
 
@@ -55,9 +55,6 @@ class GameUI {
         break;
       case ERROR_SPOT_IS_OCCUPIED:
         console.log("Spot is occupied. Try again");
-        break;
-      default:
-        console.log("Unknown error");
         break;
     }
   }
