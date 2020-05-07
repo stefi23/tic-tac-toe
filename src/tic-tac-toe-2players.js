@@ -15,9 +15,8 @@ const getPlayerInput = (question) => {
     });
   });
 };
+
 let player = "X";
-gameUI.initialize();
-gamePlay(player);
 
 const gamePlay = async (player) => {
   while (!board.gameOver()) {
@@ -25,15 +24,15 @@ const gamePlay = async (player) => {
     position = parseInt(position);
     try {
       board.write(position, player);
+      if (player === "X") {
+        player = "0";
+      } else {
+        player = "X";
+      }
     } catch (error) {
       gameUI.displayErrorMessage(error);
     }
-    position, player;
-    if (player === "X") {
-      player = "0";
-    } else {
-      player = "X";
-    }
+
     gameUI.renderBoard();
     if (board.gameOver()) {
       gameUI.displayWinner();
@@ -42,15 +41,5 @@ const gamePlay = async (player) => {
   }
 };
 
-// function isInputValid(position) {
-//   position = parseInt(position);
-//   if (isNaN(position)) {
-//     console.log("Input incorrect. Please make sure you add a number from 1-9.");
-//     return false;
-//   }
-//   return true;
-// }
-
-// module.exports = {
-//   isInputValid,
-// };
+gameUI.initialize();
+gamePlay(player);
