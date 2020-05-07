@@ -23,7 +23,12 @@ const gamePlay = async (player) => {
   while (!board.gameOver()) {
     let position = await getPlayerInput(`What's  your  move ${player}?`);
     position = parseInt(position);
-    gameUI.displayErrorMessages(position, player);
+    try {
+      board.write(position, player);
+    } catch (error) {
+      gameUI.displayErrorMessage(error);
+    }
+    position, player;
     if (player === "X") {
       player = "0";
     } else {

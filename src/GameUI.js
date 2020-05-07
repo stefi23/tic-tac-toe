@@ -43,20 +43,22 @@ class GameUI {
     return winner;
   }
 
-  displayErrorMessages(position, player) {
-    try {
-      this.board.write(position, player);
-    } catch (error) {
-      console.log("ERROR", error.message);
-      if (error.message === ERROR_NOT_A_NUMBER) {
+  displayErrorMessage(error) {
+    switch (error.message) {
+      case ERROR_NOT_A_NUMBER:
         console.log(
           "This is not a number. Please make sure you add a number from 1-9.Try again"
         );
-      } else if (error.message === ERROR_POSITION_OUTSIDE_OF_BOARD) {
+        break;
+      case ERROR_POSITION_OUTSIDE_OF_BOARD:
         console.log("Position is outside of board. Try again");
-      } else if (error.message === ERROR_SPOT_IS_OCCUPIED) {
+        break;
+      case ERROR_SPOT_IS_OCCUPIED:
         console.log("Spot is occupied. Try again");
-      }
+        break;
+      default:
+        console.log("Unknown error");
+        break;
     }
   }
 }
