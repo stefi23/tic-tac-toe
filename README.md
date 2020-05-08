@@ -8,19 +8,19 @@ Build a Tic Tac Toe game with NodeJS that can be played in the terminal. You can
 
 Tic Tac Toe game for two humans that will be played in the terminal! You can play it with a friend or against yourself 😂
 
-Code at: [tic-tac-toe-2players.js](tic-tac-toe-2players.js)
+Code at: [tic-tac-toe-2players.js](/src/tic-tac-toe-2players.js)
 
 ### Human vs Computer
 
 Play against the computer. The computer is not very smart, the computer will randomly pick a free spot and enter there the zero.
 
-Code at [tic-tac-toe-computerRandom.js](tic-tac-toe-computerRandom.js)
+Code at [tic-tac-toe-computerRandom.js](/src/tic-tac-toe-computerRandom.js)
 
 ### Human vs Computer
 
 Play against the a slightly smarter computer.
 
-Code at [tic-tac-toe-computerRandom.js](tic-tac-toe-smarter.js)
+Code at [tic-tac-toe-computerRandom.js](/src/tic-tac-toe-smarter.js)
 
 ## Install and Test
 
