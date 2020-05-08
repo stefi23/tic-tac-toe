@@ -65,6 +65,44 @@ class Board {
   gameOver() {
     return this.isBoardFull() || this.getWinner() !== null;
   }
+
+  isPlayerCloseToWinning(player) {
+    const { board } = this;
+    let oppositePlayer;
+    if (player === "X") {
+      oppositePlayer = "0";
+    } else {
+      oppositePlayer = "X";
+    }
+    for (let i = 0; i < winningCombos.length; i++) {
+      let combo = winningCombos[i];
+      const firstWinningPosition = combo[0];
+      const secondWinningPosition = combo[1];
+      const thirdWinningPosition = combo[2];
+      if (
+        board[firstWinningPosition] == player &&
+        board[firstWinningPosition] == board[secondWinningPosition] &&
+        board[thirdWinningPosition] !== oppositePlayer
+      ) {
+        return thirdWinningPosition + 1;
+      }
+      if (
+        board[firstWinningPosition] == player &&
+        board[firstWinningPosition] == board[thirdWinningPosition] &&
+        board[secondWinningPosition] !== oppositePlayer
+      ) {
+        return secondWinningPosition + 1;
+      }
+      if (
+        board[secondWinningPosition] == player &&
+        board[secondWinningPosition] == board[thirdWinningPosition] &&
+        board[thirdWinningPosition] !== oppositePlayer
+      ) {
+        return firstWinningPosition + 1;
+      }
+    }
+    return false;
+  }
 }
 
 module.exports = Board;

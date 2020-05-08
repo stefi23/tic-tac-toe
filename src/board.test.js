@@ -107,42 +107,52 @@ describe("Board", () => {
       board.board = ["0", "X", "0", "X", "X", "0", "X", "0", "X"];
       expect(board.gameOver()).toEqual(true);
     });
+
+    it("Should return board if game is not over", () => {
+      const board = new Board();
+      board.board = ["X", "", "", "X", "", "0", "", "", "0"];
+      expect(board.isBoardFull()).toEqual(false);
+    });
   });
-  it("Should return board if game is not over", () => {
-    const board = new Board();
-    board.board = ["X", "", "", "X", "", "0", "", "", "0"];
-    expect(board.isBoardFull()).toEqual(false);
+  describe("#isPlayerCloseToWinning", () => {
+    it("should return null in case player is not close to winning", () => {
+      let player = "X";
+      const board = new Board();
+      board.board = ["", "X", "", "", "", "0", "", "", ""];
+      let result = board.isPlayerCloseToWinning(player);
+      expect(result).toEqual(false);
+    });
+    it("should be the next position that would account for a win in case X is the player", () => {
+      const board = new Board();
+      const cases = [
+        { board: ["X", "X", "", "", "", "0", "", "", ""], expected: 3 },
+        { board: ["0", "0", "X", "", "", "X", "", "", ""], expected: 9 },
+        { board: ["X", "", "", "", "X", "0", "", "", ""], expected: 9 },
+        { board: ["X", "", "", "X", "X", "", "", "", ""], expected: 6 },
+        { board: ["", "X", "X", "0", "0", "", "", "", ""], expected: 1 },
+        { board: ["", "", "0", "0", "X", "", "0", "X", ""], expected: 2 },
+      ];
+      cases.forEach(({ board: boardDef, expected }) => {
+        board.board = boardDef;
+        const result = board.isPlayerCloseToWinning("X");
+        expect(result).toEqual(expected);
+      });
+    });
+    it("should be the next position that would account for a win in case 0 is the player", () => {
+      const board = new Board();
+      const cases = [
+        { board: ["", "0", "0", "", "", "X", "", "", ""], expected: 1 },
+        { board: ["0", "0", "", "", "", "X", "X", "", ""], expected: 3 },
+        { board: ["0", "X", "", "", "", "X", "", "", "0"], expected: 5 },
+        { board: ["X", "", "", "", "X", "", "", "0", "0"], expected: 7 },
+        { board: ["0", "X", "X", "", "0", "", "0", "", ""], expected: 4 },
+        { board: ["", "0", "X", "X", "0", "", "X", "", ""], expected: 8 },
+      ];
+      cases.forEach(({ board: boardDef, expected }) => {
+        board.board = boardDef;
+        const result = board.isPlayerCloseToWinning("0");
+        expect(result).toEqual(expected);
+      });
+    });
   });
 });
-
-// describe("#isSpotFree", () => {
-//   it("should return false if spot is ocuppied", () => {
-//     const board = new Board();
-//     board.write(4, "X");
-//     console.log(board.board[4]);
-//     expect(board.isSpotFree(4)).toEqual(false);
-//     board.write(9, "X");
-//     console.log(board.board[4]);
-//     expect(board.isSpotFree(9)).toEqual(false);
-//   });
-//   it("should return true if spot is free", () => {
-//     const board = new Board();
-//     expect(board.isSpotFree(4)).toEqual(true);
-//     expect(board.isSpotFree(9)).toEqual(true);
-//   });
-// });
-// describe("#isInputOutsideOfBoard", () => {
-//   const board = new Board();
-//   it("should return true if position is outside of the board", () => {
-//     const position1 = 12;
-//     expect(board.isInputOutsideOfBoard(position1)).toEqual(true);
-//     const position2 = -3;
-//     expect(board.isInputOutsideOfBoard(position2)).toEqual(true);
-//   });
-//   it("should return false if position is on the board", () => {
-//     const position1 = 2;
-//     expect(board.isInputOutsideOfBoard(position1)).toEqual(false);
-//     const position2 = 7;
-//     expect(board.isInputOutsideOfBoard(position2)).toEqual(false);
-//   });
-// });
