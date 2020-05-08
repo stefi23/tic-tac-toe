@@ -20,7 +20,7 @@ Code at [tic-tac-toe-computerRandom.js](/src/tic-tac-toe-computerRandom.js)
 
 Play against the a slightly smarter computer.
 
-Code at [tic-tac-toe-computerRandom.js](/src/tic-tac-toe-smarter.js)
+Code at [tic-tac-toe-smarter.js](/src/tic-tac-toe-smarter.js)
 
 ## Install and Test
 
